@@ -1,0 +1,15 @@
+## User settings
+xcuserdata/
+
+## App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+*.mobileprovision
+
+.build/
+
+*.DS_Store
+*.xcuserstate
+*.xcconfig
