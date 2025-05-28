@@ -56,6 +56,8 @@ class GameScene: SKScene {
             "cheese",
             "mackerel",
             "gray",
+            "vanila",
+            "calico"
         ]
         
         let itemImage = itemImages[GKRandomSource.sharedRandom().nextInt(upperBound: itemImages.count)]
