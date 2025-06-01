@@ -37,6 +37,8 @@ class GameScene: SKScene {
         return (spareHeight / 2) + (itemSize / 2)
     }
     
+    var currentMatch = Set<Item>()
+    
     override func didMove(to view: SKView) {
         // set scene size explicitly
         self.size = view.bounds.size
@@ -81,11 +83,58 @@ class GameScene: SKScene {
         
         let item = Item(imageNamed: itemImage, column: column, row: row)
         
+        item.name = itemImage
         item.position = positionItem(for: item)
         item.size = CGSize(width: itemSize, height: itemSize)
         addChild(item)
         
         return item
+    }
+}
+
+extension GameScene {
+    func findItem(point: CGPoint) -> Item? {
+        let item = nodes(at: point).compactMap { $0 as? Item }
+        return item.first
+    }
+    
+    func findMatch(currentItem: Item) {
+        var checkItems = [Item?]()
+        
+        currentMatch.insert(currentItem)
+        
+        let position = currentItem.position
+        checkItems.append(findItem(point: CGPoint(x: position.x, y: position.y - itemSize)))
+        checkItems.append(findItem(point: CGPoint(x: position.x, y: position.y + itemSize)))
+        checkItems.append(findItem(point: CGPoint(x: position.x - itemSize, y: position.y)))
+        checkItems.append(findItem(point: CGPoint(x: position.x + itemSize, y: position.y)))
+        
+        for case let check? in checkItems {
+            if currentMatch.contains(check) {
+                continue
+            }
+            
+            if check.name == currentItem.name {
+                findMatch(currentItem: check)
+            }
+        }
+    }
+    
+    func removeMatches() {
+        for item in currentMatch {
+            item.removeFromParent()
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        
+        let location = touch.location(in: self)
+        guard let tappedItem = findItem(point: location) else { return }
+        
+        currentMatch.removeAll()
+        findMatch(currentItem: tappedItem)
+        removeMatches()
     }
 }
 
