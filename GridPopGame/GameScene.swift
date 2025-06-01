@@ -84,7 +84,22 @@ class GameScene: SKScene {
         let item = Item(imageNamed: itemImage, column: column, row: row)
         
         item.name = itemImage
-        item.position = positionItem(for: item)
+        
+        // item.position = positionItem(for: item)
+        
+        if startOffScreen {
+            let finalPosition = positionItem(for: item)
+            item.position = finalPosition
+            item.position.y += (itemSize * CGFloat(itemsPerColumn))
+            
+            let downAction = SKAction.move(to: finalPosition, duration: 0.4)
+            item.run(downAction)
+            self.isUserInteractionEnabled = true
+        } else {
+            item.position = positionItem(for: item)
+        }
+        
+        
         item.size = CGSize(width: itemSize, height: itemSize)
         addChild(item)
         
@@ -121,7 +136,13 @@ extension GameScene {
     }
     
     func removeMatches() {
-        for item in currentMatch {
+        let sortedMatches = currentMatch.sorted {
+            $0.row > $1.row
+        }
+        
+        for item in sortedMatches {
+            columns[item.column].remove(at: item.row)
+            
             item.removeFromParent()
         }
     }
@@ -132,9 +153,29 @@ extension GameScene {
         let location = touch.location(in: self)
         guard let tappedItem = findItem(point: location) else { return }
         
+        isUserInteractionEnabled = false
+        
         currentMatch.removeAll()
         findMatch(currentItem: tappedItem)
         removeMatches()
+        moveDown()
+    }
+    
+    func moveDown() {
+        for (columnIndex, column) in columns.enumerated() {
+            for (rowIndex, item) in column.enumerated() {
+                item.row = rowIndex
+                
+                let downAction = SKAction.move(to: positionItem(for: item), duration: 0.3)
+                item.run(downAction)
+            }
+            
+            while columns[columnIndex].count < itemsPerRow {
+                let item = createItem(column: columnIndex, row: columns[columnIndex].count, startOffScreen: true)
+                
+                columns[columnIndex].append(item)
+            }
+        }
     }
 }
 
