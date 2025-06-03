@@ -211,7 +211,11 @@ extension GameScene {
         
         makeScore()
         
-        moves -= 1
+        if moves > 1 {
+            moves -= 1
+        } else {
+            gameOver()
+        }
     }
     
     func moveDown() {
@@ -253,6 +257,15 @@ extension GameScene {
             
             score += Int(scoreToAdd)
         }
+    }
+    
+    func gameOver() {
+        let gameOver = SKSpriteNode(imageNamed: "gameover")
+        gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        gameOver.size = self.size
+        gameOver.zPosition = 2
+        
+        addChild(gameOver)
     }
 }
 
