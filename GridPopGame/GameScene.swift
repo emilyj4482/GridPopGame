@@ -203,10 +203,12 @@ extension GameScene {
         
         makeScore()
         
-        if moves > 1 {
-            moves -= 1
-        } else {
-            gameOver()
+        
+        moves -= 1
+        if moves == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                self.gameOver()
+            }
         }
     }
     
