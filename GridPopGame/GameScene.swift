@@ -39,7 +39,7 @@ class GameScene: SKScene {
     
     var currentMatch = Set<Item>()
     
-    private let scoreLabel = SKLabelNode()
+    private let scoreLabel = GameLabel()
     
     private var score: Int = 0 {
         didSet {
@@ -56,7 +56,7 @@ class GameScene: SKScene {
         return size.height - (gridStartY * 0.7)
     }
     
-    private let movesLabel = SKLabelNode()
+    private let movesLabel = GameLabel()
     
     private var moves: Int = 10 {
         didSet {
@@ -89,17 +89,9 @@ class GameScene: SKScene {
     private func createLabels() {
         score = 0
         scoreLabel.position = CGPoint(x: scoreXOffset, y: labelYOffset)
-        scoreLabel.fontColor = .white
-        scoreLabel.fontName = "HelveticaNeue-Bold"
-        scoreLabel.fontSize = 27
-        scoreLabel.zPosition = 1
         
         moves = 10
         movesLabel.position = CGPoint(x: 300, y: labelYOffset)
-        movesLabel.fontColor = .white
-        movesLabel.fontName = "HelveticaNeue-Bold"
-        movesLabel.fontSize = 27
-        movesLabel.zPosition = 1
         
         addChild(scoreLabel)
         addChild(movesLabel)
