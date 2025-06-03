@@ -39,7 +39,7 @@ class GameScene: SKScene {
     
     var currentMatch = Set<Item>()
     
-    private let scoreLabel = GameLabel()
+    private let scoreLabel = GameLabel(.score)
     
     private var score: Int = 0 {
         didSet {
@@ -49,19 +49,24 @@ class GameScene: SKScene {
     
     private var scoreXOffset: CGFloat {
         let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
-        return (scoreLabel.bounds.width / 2) + (spareWidth / 2)
+        return spareWidth / 2 + 3
     }
     
     private var labelYOffset: CGFloat {
         return size.height - (gridStartY * 0.7)
     }
     
-    private let movesLabel = GameLabel()
+    private let movesLabel = GameLabel(.moves)
     
     private var moves: Int = 10 {
         didSet {
             movesLabel.text = "moves : \(moves)"
         }
+    }
+    
+    private var movesXOffset: CGFloat {
+        let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
+        return size.width - (spareWidth / 2) - 3
     }
     
     override func didMove(to view: SKView) {
@@ -91,7 +96,7 @@ class GameScene: SKScene {
         scoreLabel.position = CGPoint(x: scoreXOffset, y: labelYOffset)
         
         moves = 10
-        movesLabel.position = CGPoint(x: 300, y: labelYOffset)
+        movesLabel.position = CGPoint(x: movesXOffset, y: labelYOffset)
         
         addChild(scoreLabel)
         addChild(movesLabel)
