@@ -39,10 +39,35 @@ class GameScene: SKScene {
     
     var currentMatch = Set<Item>()
     
+    private let scoreLabel = SKLabelNode()
+    
+    private var scoreXOffset: CGFloat {
+        let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
+        return (scoreLabel.bounds.width / 2) + (spareWidth / 2)
+    }
+    
+    private var labelYOffset: CGFloat {
+        return size.height - (gridStartY * 0.7)
+    }
+    
+    private var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "score : \(score)"
+        }
+    }
+    
     override func didMove(to view: SKView) {
         // set scene size explicitly
         self.size = view.bounds.size
         
+        createBackground()
+        
+        createGrid()
+        
+        createScoreLabel()
+    }
+    
+    private func createBackground() {
         // create background sprite
         let background = SKSpriteNode(imageNamed: Items.background)
         
@@ -50,10 +75,18 @@ class GameScene: SKScene {
         background.zPosition = -1   // behind other elements
         background.size = size      // scale to scene size
         
-        // let background = Background(imageNamed: Items.background, size: size)
         addChild(background)
+    }
+    
+    private func createScoreLabel() {
+        score = 0
+        scoreLabel.position = CGPoint(x: scoreXOffset, y: labelYOffset)
+        scoreLabel.fontColor = .label
+        scoreLabel.fontName = "HelveticaNeue-Bold"
+        scoreLabel.fontSize = 27
+        scoreLabel.zPosition = 1
         
-        createGrid()
+        addChild(scoreLabel)
     }
     
     private func createGrid() {
