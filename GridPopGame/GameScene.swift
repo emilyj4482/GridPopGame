@@ -41,6 +41,12 @@ class GameScene: SKScene {
     
     private let scoreLabel = SKLabelNode()
     
+    private var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "score : \(score)"
+        }
+    }
+    
     private var scoreXOffset: CGFloat {
         let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
         return (scoreLabel.bounds.width / 2) + (spareWidth / 2)
@@ -50,9 +56,11 @@ class GameScene: SKScene {
         return size.height - (gridStartY * 0.7)
     }
     
-    private var score: Int = 0 {
+    private let movesLabel = SKLabelNode()
+    
+    private var moves: Int = 10 {
         didSet {
-            scoreLabel.text = "score : \(score)"
+            movesLabel.text = "moves : \(moves)"
         }
     }
     
@@ -64,7 +72,7 @@ class GameScene: SKScene {
         
         createGrid()
         
-        createScoreLabel()
+        createLabels()
     }
     
     private func createBackground() {
@@ -78,15 +86,23 @@ class GameScene: SKScene {
         addChild(background)
     }
     
-    private func createScoreLabel() {
+    private func createLabels() {
         score = 0
         scoreLabel.position = CGPoint(x: scoreXOffset, y: labelYOffset)
-        scoreLabel.fontColor = .label
+        scoreLabel.fontColor = .white
         scoreLabel.fontName = "HelveticaNeue-Bold"
         scoreLabel.fontSize = 27
         scoreLabel.zPosition = 1
         
+        moves = 10
+        movesLabel.position = CGPoint(x: 300, y: labelYOffset)
+        movesLabel.fontColor = .white
+        movesLabel.fontName = "HelveticaNeue-Bold"
+        movesLabel.fontSize = 27
+        movesLabel.zPosition = 1
+        
         addChild(scoreLabel)
+        addChild(movesLabel)
     }
     
     private func createGrid() {
@@ -192,6 +208,10 @@ extension GameScene {
         findMatch(currentItem: tappedItem)
         removeMatches()
         moveDown()
+        
+        makeScore()
+        
+        moves -= 1
     }
     
     func moveDown() {
@@ -208,6 +228,30 @@ extension GameScene {
                 
                 columns[columnIndex].append(item)
             }
+        }
+    }
+}
+
+extension GameScene {
+    func makeScore() {
+        let newScore = currentMatch.count
+        
+        if newScore == 1 {
+            // MARK: 삭제하고 1개는 애초에 안눌리게 처리하기
+            
+        } else if newScore == 2 {
+            let matchCount = min(newScore, 2)
+            
+            let scoreToAdd = pow(2, Double(matchCount))
+            
+            score += Int(scoreToAdd)
+            
+        } else {
+            let matchCount = min(newScore, 6)
+            
+            let scoreToAdd = pow(2, Double(matchCount))
+            
+            score += Int(scoreToAdd)
         }
     }
 }
