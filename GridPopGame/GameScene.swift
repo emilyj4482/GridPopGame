@@ -37,8 +37,6 @@ class GameScene: SKScene {
         return (spareHeight / 2) + (itemSize / 2)
     }
     
-    var currentMatch = Set<Item>()
-    
     private let scoreLabel = GameLabel(.score)
     
     private var score: Int = 0 {
@@ -151,6 +149,8 @@ class GameScene: SKScene {
         
         return item
     }
+    
+    var matchedItems = Set<Item>()
 }
 
 extension GameScene {
@@ -162,7 +162,7 @@ extension GameScene {
     func findMatch(currentItem: Item) {
         var checkItems = [Item?]()
         
-        currentMatch.insert(currentItem)
+        matchedItems.insert(currentItem)
         
         let position = currentItem.position
         checkItems.append(findItem(point: CGPoint(x: position.x, y: position.y - itemSize)))
@@ -171,7 +171,7 @@ extension GameScene {
         checkItems.append(findItem(point: CGPoint(x: position.x + itemSize, y: position.y)))
         
         for case let check? in checkItems {
-            if currentMatch.contains(check) {
+            if matchedItems.contains(check) {
                 continue
             }
             
@@ -182,7 +182,7 @@ extension GameScene {
     }
     
     func removeMatches() {
-        let sortedMatches = currentMatch.sorted {
+        let sortedMatches = matchedItems.sorted {
             $0.row > $1.row
         }
         
@@ -201,7 +201,7 @@ extension GameScene {
         
         isUserInteractionEnabled = false
         
-        currentMatch.removeAll()
+        matchedItems.removeAll()
         findMatch(currentItem: tappedItem)
         removeMatches()
         moveDown()
@@ -237,7 +237,7 @@ extension GameScene {
 
 extension GameScene {
     func makeScore() {
-        let newScore = currentMatch.count
+        let newScore = matchedItems.count
         
         if newScore == 1 {
             // MARK: 삭제하고 1개는 애초에 안눌리게 처리하기
