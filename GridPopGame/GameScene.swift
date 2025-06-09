@@ -67,6 +67,8 @@ class GameScene: SKScene {
         return size.width - (spareWidth / 2) - 3
     }
     
+    private var musicButton = MusicButton()
+    
     override func didMove(to view: SKView) {
         // set scene size explicitly
         self.size = view.bounds.size
@@ -76,6 +78,8 @@ class GameScene: SKScene {
         createGrid()
         
         createLabels()
+        
+        createButton()
     }
     
     private func createBackground() {
@@ -87,6 +91,15 @@ class GameScene: SKScene {
         background.size = size      // scale to scene size
         
         addChild(background)
+    }
+    
+    private func createButton() {
+        let x = movesXOffset - musicButton.size.width / 2
+        let y = movesLabel.position.y + musicButton.size.height * 2.5
+        
+        musicButton.position = CGPoint(x: x, y: y)
+        
+        addChild(musicButton)
     }
     
     private func createLabels() {
