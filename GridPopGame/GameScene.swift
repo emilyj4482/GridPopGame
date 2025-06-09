@@ -138,7 +138,6 @@ class GameScene: SKScene {
             
             let downAction = SKAction.move(to: finalPosition, duration: 0.4)
             item.run(downAction)
-            self.isUserInteractionEnabled = true
         } else {
             item.position = positionItem(for: item)
         }
@@ -182,6 +181,8 @@ extension GameScene {
     }
     
     func removeMatches() {
+        guard matchedItems.count > 1 else { return }
+        
         let sortedMatches = matchedItems.sorted {
             $0.row > $1.row
         }
@@ -191,6 +192,13 @@ extension GameScene {
             
             item.removeFromParent()
         }
+        
+        moves -= 1
+        if moves == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                self.gameOver()
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -199,22 +207,12 @@ extension GameScene {
         let location = touch.location(in: self)
         guard let tappedItem = findItem(point: location) else { return }
         
-        isUserInteractionEnabled = false
-        
         matchedItems.removeAll()
         findMatch(currentItem: tappedItem)
         removeMatches()
         moveDown()
         
         makeScore()
-        
-        
-        moves -= 1
-        if moves == 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                self.gameOver()
-            }
-        }
     }
     
     func moveDown() {
