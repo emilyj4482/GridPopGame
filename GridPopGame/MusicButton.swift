@@ -30,6 +30,8 @@ class MusicButton: SKSpriteNode {
         let imageName = isMusicOn ? ImageName.musicOn.rawValue : ImageName.musicOff.rawValue
         
         texture = SKTexture(imageNamed: imageName)
+        
+        alpha = isMusicOn ? 1.0 : 0.8
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
