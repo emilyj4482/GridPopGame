@@ -206,12 +206,8 @@ extension GameScene {
             item.removeFromParent()
         }
         
-        moves -= 1
-        if moves == 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                self.gameOver()
-            }
-        }
+        moveCountDown()
+        scoreUp()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -224,8 +220,6 @@ extension GameScene {
         findMatch(currentItem: tappedItem)
         removeMatches()
         moveDown()
-        
-        makeScore()
     }
     
     func moveDown() {
@@ -247,26 +241,21 @@ extension GameScene {
 }
 
 extension GameScene {
-    func makeScore() {
-        let newScore = matchedItems.count
+    func moveCountDown() {
+        moves -= 1
         
-        if newScore == 1 {
-            // MARK: 삭제하고 1개는 애초에 안눌리게 처리하기
-            
-        } else if newScore == 2 {
-            let matchCount = min(newScore, 2)
-            
-            let scoreToAdd = pow(2, Double(matchCount))
-            
-            score += Int(scoreToAdd)
-            
-        } else {
-            let matchCount = min(newScore, 6)
-            
-            let scoreToAdd = pow(2, Double(matchCount))
-            
-            score += Int(scoreToAdd)
+        if moves == 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                self.gameOver()
+            }
         }
+    }
+    
+    func scoreUp() {
+        let matchCount = matchedItems.count
+        let finalCount = min(matchCount, 6)
+        let scoreToAdd = pow(2, Double(finalCount))
+        score += Int(scoreToAdd)
     }
     
     func gameOver() {
