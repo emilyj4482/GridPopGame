@@ -37,7 +37,7 @@ class GameScene: SKScene {
         return (spareHeight / 2) + (itemSize / 2)
     }
     
-    private let scoreLabel = GameLabel(.score)
+    private let scoreLabel = GameLabel(type: .score)
     
     private var score: Int = 0 {
         didSet {
@@ -47,14 +47,14 @@ class GameScene: SKScene {
     
     private var scoreXOffset: CGFloat {
         let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
-        return spareWidth / 2 + 3
+        return (spareWidth / 2)
     }
     
     private var labelYOffset: CGFloat {
         return size.height - (gridStartY * 0.7)
     }
     
-    private let movesLabel = GameLabel(.moves)
+    private let movesLabel = GameLabel(type: .moves)
     
     private var moves: Int = 10 {
         didSet {
@@ -64,7 +64,7 @@ class GameScene: SKScene {
     
     private var movesXOffset: CGFloat {
         let spareWidth = size.width - (itemSize * CGFloat(itemsPerRow))
-        return size.width - (spareWidth / 2) - 3
+        return size.width - spareWidth / 2
     }
     
     private var musicButton = MusicButton()

@@ -7,42 +7,31 @@
 
 import SpriteKit
 
-class GameLabel: SKNode {
-    
-    private let labelNode = SKLabelNode()
-    
-    init(_ labelCase: LabelCase) {
+class GameLabel: SKLabelNode {
+    init(type: LabelType) {
         super.init()
-        labelNode.fontColor = .white
-        labelNode.fontName = "HelveticaNeue-Bold"
-        labelNode.fontSize = 27
-        labelNode.zPosition = 1
-        
-        switch labelCase {
-        case .score:
-            labelNode.horizontalAlignmentMode = .left
-        case .moves:
-            labelNode.horizontalAlignmentMode = .right
-        }
-        
-        addChild(labelNode)
+        fontColor = .white
+        fontName = "HelveticaNeue-Bold"
+        fontSize = 27
+        zPosition = 1
+        horizontalAlignmentMode = type.horizontalAlignmentMode
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    var text: String? {
-        get { labelNode.text }
-        set { labelNode.text = newValue }
-    }
-    
-    var labelWidth: CGFloat {
-        return labelNode.bounds.width
-    }
 }
 
-enum LabelCase {
+enum LabelType {
     case score
     case moves
+    
+    var horizontalAlignmentMode: SKLabelHorizontalAlignmentMode {
+        switch self {
+        case .score:
+            return .left
+        case .moves:
+            return .right
+        }
+    }
 }
