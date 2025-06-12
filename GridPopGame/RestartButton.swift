@@ -22,12 +22,14 @@ class RestartButton: SKSpriteNode {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        setScale(1.3)
+        setScale(1.2)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         setScale(1.0)
         
-        touchAction?()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.touchAction?()
+        }
     }
 }
