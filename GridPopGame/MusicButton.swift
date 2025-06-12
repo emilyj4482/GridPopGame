@@ -15,7 +15,7 @@ class MusicButton: SKSpriteNode {
     }
     
     init() {
-        let texture = SKTexture(imageNamed: ImageName.musicOn.rawValue)
+        let texture = SKTexture(imageNamed: Assets.musicOn.rawValue)
         let size = CGSize(width: 30, height: 30)
         super.init(texture: texture, color: .white, size: size)
         isUserInteractionEnabled = true
@@ -27,7 +27,7 @@ class MusicButton: SKSpriteNode {
     }
     
     private func toggleImage() {
-        let imageName = isMusicOn ? ImageName.musicOn.rawValue : ImageName.musicOff.rawValue
+        let imageName = isMusicOn ? Assets.musicOn.rawValue : Assets.musicOff.rawValue
         
         texture = SKTexture(imageNamed: imageName)
         
@@ -43,9 +43,4 @@ class MusicButton: SKSpriteNode {
         
         setScale(1.0)
     }
-}
-
-enum ImageName: String {
-    case musicOn
-    case musicOff
 }

@@ -84,7 +84,7 @@ class GameScene: SKScene {
     
     private func createBackground() {
         // create background sprite
-        let background = SKSpriteNode(imageNamed: Items.background)
+        let background = SKSpriteNode(imageNamed: Assets.background.rawValue)
         
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = -1   // behind other elements
@@ -260,7 +260,7 @@ extension GameScene {
     }
     
     func gameOver() {
-        let gameOver = SKSpriteNode(imageNamed: "gameover")
+        let gameOver = SKSpriteNode(imageNamed: Assets.gameover.rawValue)
         gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2)
         gameOver.size = self.size
         gameOver.zPosition = 2

@@ -28,6 +28,4 @@ enum Items: CaseIterable {
             return "vanila"
         }
     }
-    
-    static let background: String = "background"
 }
