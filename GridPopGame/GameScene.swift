@@ -245,6 +245,7 @@ extension GameScene {
         moves -= 1
         
         if moves == 0 {
+            isUserInteractionEnabled = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 self.gameOver()
             }
@@ -265,6 +266,20 @@ extension GameScene {
         gameOver.zPosition = 2
         
         addChild(gameOver)
+        
+        let restartButton = RestartButton()
+        restartButton.size = CGSize(width: size.width / 5, height: size.width / 5)
+        restartButton.position = CGPoint(x: 0, y: -(size.height / 6))
+        restartButton.zPosition = 3
+        
+        restartButton.touchAction = { [weak self] in
+            self?.score = 0
+            self?.moves = 10
+            self?.isUserInteractionEnabled = true
+            gameOver.removeFromParent()
+        }
+        
+        gameOver.addChild(restartButton)
     }
 }
 
