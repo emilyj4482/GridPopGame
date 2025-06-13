@@ -39,8 +39,8 @@ class MusicButton: SKSpriteNode {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isMusicOn.toggle()
-        
         setScale(1.0)
+        
+        isMusicOn.toggle()
     }
 }

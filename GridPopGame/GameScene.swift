@@ -11,6 +11,8 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    private let backgroundImage = SKSpriteNode(imageNamed: Assets.background.rawValue)
+    
     private var columns: [[Item]] = []
     
     private let itemsPerColumn: Int = 8
@@ -69,31 +71,32 @@ class GameScene: SKScene {
     
     private var musicButton = MusicButton()
     
+    private let gameoverImage = SKSpriteNode(imageNamed: Assets.gameover.rawValue)
+    
+    private let restartButton = RestartButton()
+    
     override func didMove(to view: SKView) {
         // set scene size explicitly
         self.size = view.bounds.size
         
-        createBackground()
+        addBackgroundImage()
         
         createGrid()
         
-        createLabels()
+        addLabels()
         
-        createButton()
+        addMusicButton()
     }
     
-    private func createBackground() {
-        // create background sprite
-        let background = SKSpriteNode(imageNamed: Assets.background.rawValue)
+    private func addBackgroundImage() {
+        backgroundImage.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        backgroundImage.zPosition = -1   // behind other elements
+        backgroundImage.size = size      // scale to scene size
         
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.zPosition = -1   // behind other elements
-        background.size = size      // scale to scene size
-        
-        addChild(background)
+        addChild(backgroundImage)
     }
     
-    private func createButton() {
+    private func addMusicButton() {
         let x = movesXOffset - musicButton.size.width / 2
         let y = movesLabel.position.y + musicButton.size.height * 2.5
         
@@ -102,7 +105,7 @@ class GameScene: SKScene {
         addChild(musicButton)
     }
     
-    private func createLabels() {
+    private func addLabels() {
         score = 0
         scoreLabel.position = CGPoint(x: scoreXOffset, y: labelYOffset)
         
@@ -141,8 +144,6 @@ class GameScene: SKScene {
         let item = Item(imageNamed: itemImage, column: column, row: row)
         
         item.name = itemImage
-        
-        // item.position = positionItem(for: item)
         
         if startOffScreen {
             let finalPosition = positionItem(for: item)
@@ -260,14 +261,12 @@ extension GameScene {
     }
     
     func gameOver() {
-        let gameOver = SKSpriteNode(imageNamed: Assets.gameover.rawValue)
-        gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        gameOver.size = self.size
-        gameOver.zPosition = 2
+        gameoverImage.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        gameoverImage.size = self.size
+        gameoverImage.zPosition = 2
         
-        addChild(gameOver)
+        addChild(gameoverImage)
         
-        let restartButton = RestartButton()
         restartButton.size = CGSize(width: size.width / 5, height: size.width / 5)
         restartButton.position = CGPoint(x: 0, y: -(size.height / 6))
         restartButton.zPosition = 3
@@ -276,10 +275,10 @@ extension GameScene {
             self?.score = 0
             self?.moves = 10
             self?.isUserInteractionEnabled = true
-            gameOver.removeFromParent()
+            self?.gameoverImage.removeFromParent()
         }
         
-        gameOver.addChild(restartButton)
+        gameoverImage.addChild(restartButton)
     }
 }
 
