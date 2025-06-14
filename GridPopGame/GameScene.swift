@@ -96,6 +96,8 @@ class GameScene: SKScene {
         addLabels()
         
         addMusicButton()
+        
+        gameoverImage.addChild(restartButton)
     }
     
     private func addBackgroundImage() {
@@ -298,7 +300,7 @@ extension GameScene {
             self?.gameoverImage.removeFromParent()
         }
         
-        gameoverImage.addChild(restartButton)
+        
     }
 }
 
