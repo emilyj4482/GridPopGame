@@ -14,6 +14,8 @@ class MusicButton: SKSpriteNode {
         }
     }
     
+    var buttonAction: ((Bool) -> Void)?
+    
     init() {
         let texture = SKTexture(imageNamed: Assets.musicOn.rawValue)
         let size = CGSize(width: 30, height: 30)
@@ -42,5 +44,6 @@ class MusicButton: SKSpriteNode {
         setScale(1.0)
         
         isMusicOn.toggle()
+        buttonAction?(isMusicOn)
     }
 }

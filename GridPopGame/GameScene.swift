@@ -13,6 +13,15 @@ class GameScene: SKScene {
     
     private let backgroundImage = SKSpriteNode(imageNamed: Assets.background.rawValue)
     
+    private let backgroundMusic: SKAudioNode = {
+        let node = SKAudioNode(fileNamed: Assets.backgroundMusic.rawValue)
+        
+        node.isPositional = false
+        node.autoplayLooped = true
+        
+        return node
+    }()
+    
     private var columns: [[Item]] = []
     
     private let itemsPerColumn: Int = 8
@@ -80,6 +89,7 @@ class GameScene: SKScene {
         self.size = view.bounds.size
         
         addBackgroundImage()
+        addBackgroundMusic()
         
         createGrid()
         
@@ -96,11 +106,21 @@ class GameScene: SKScene {
         addChild(backgroundImage)
     }
     
+    private func addBackgroundMusic() {
+        addChild(backgroundMusic)
+    }
+    
     private func addMusicButton() {
         let x = movesXOffset - musicButton.size.width / 2
         let y = movesLabel.position.y + musicButton.size.height * 2.5
         
         musicButton.position = CGPoint(x: x, y: y)
+        
+        musicButton.buttonAction = { [weak self] isMusicOn in
+            isMusicOn
+            ? self?.backgroundMusic.run(SKAction.play())
+            : self?.backgroundMusic.run(SKAction.pause())
+        }
         
         addChild(musicButton)
     }

@@ -13,4 +13,6 @@ enum Assets: String {
     case restart
     case musicOn
     case musicOff
+    case backgroundMusic
+    case popSound
 }
