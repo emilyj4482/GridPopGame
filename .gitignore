@@ -1,5 +1,6 @@
 ## User settings
 xcuserdata/
+xcshareddata/
 
 ## App packaging
 *.ipa
