@@ -22,6 +22,15 @@ class GameScene: SKScene {
         return node
     }()
     
+    private let popSound: SKAudioNode = {
+        let node = SKAudioNode(fileNamed: Assets.popSound.rawValue)
+        
+        node.isPositional = false
+        node.autoplayLooped = false
+        
+        return node
+    }()
+    
     private var columns: [[Item]] = []
     
     private let itemsPerColumn: Int = 8
@@ -89,7 +98,7 @@ class GameScene: SKScene {
         self.size = view.bounds.size
         
         addBackgroundImage()
-        addBackgroundMusic()
+        addAudioNodes()
         
         createGrid()
         
@@ -108,8 +117,9 @@ class GameScene: SKScene {
         addChild(backgroundImage)
     }
     
-    private func addBackgroundMusic() {
+    private func addAudioNodes() {
         addChild(backgroundMusic)
+        addChild(popSound)
     }
     
     private func addMusicButton() {
@@ -228,6 +238,8 @@ extension GameScene {
             
             item.removeFromParent()
         }
+        
+        popSound.run(SKAction.play())
         
         moveCountDown()
         scoreUp()
