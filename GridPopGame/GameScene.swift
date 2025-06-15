@@ -8,6 +8,7 @@
 import SwiftUI
 import SpriteKit
 import GameplayKit
+import AVFAudio
 
 class GameScene: SKScene {
     
@@ -107,6 +108,10 @@ class GameScene: SKScene {
         addMusicButton()
         
         gameoverImage.addChild(restartButton)
+        
+        if let playerNode = backgroundMusic.avAudioNode as? AVAudioPlayerNode {
+            playerNode.volume = 0.7
+        }
     }
     
     private func addBackgroundImage() {
@@ -311,8 +316,6 @@ extension GameScene {
             self?.isUserInteractionEnabled = true
             self?.gameoverImage.removeFromParent()
         }
-        
-        
     }
 }
 
