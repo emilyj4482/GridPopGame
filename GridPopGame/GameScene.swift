@@ -232,7 +232,10 @@ extension GameScene {
     }
     
     func removeMatches() {
-        guard matchedItems.count > 1 else { return }
+        guard matchedItems.count > 1 else {
+            trembleSingleItem(matchedItems.first)
+            return
+        }
         
         let sortedMatches = matchedItems.sorted {
             $0.row > $1.row
@@ -248,6 +251,20 @@ extension GameScene {
         
         moveCountDown()
         scoreUp()
+    }
+    
+    private func trembleSingleItem(_ item: Item?) {
+        guard let item = item else { return }
+        
+        let pointX = item.position.x
+    
+        let moveToLeft = SKAction.moveTo(x: pointX - 5, duration: 0.15)
+        let moveToRight = SKAction.moveTo(x: pointX + 5, duration: 0.15)
+        let restorePosition = SKAction.moveTo(x: pointX, duration: 0.15)
+        
+        let sequence = SKAction.sequence([moveToLeft, moveToRight, moveToLeft, moveToRight, restorePosition])
+        
+        item.run(sequence)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
