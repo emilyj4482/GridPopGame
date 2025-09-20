@@ -177,3 +177,17 @@ class GameScene: SKScene {
 ```
 ## 트러블슈팅
 ### ⚠️ SKLabelNode 레이아웃 문제
+#### ☹️ 문제
+<img src="https://github.com/user-attachments/assets/9f37e3be-55a1-4b6c-a39c-a1fa5c74baad" width=400>
+
+점수, 남은 횟수 레이블이 제자리에 유지되지 않고 텍스트 길이에 따라 움직이는 현상
+#### 🧐 원인
+- `SKLabelNode`의 레이아웃 속성인 `horizontalAlignmentMode`의 기본값이 `.center`
+- 이 속성은 텍스트의 정렬이 아니라 노드의 `position`에 대한 고정축을 결정하는 값
+- `.center`에서는 텍스트 중앙이 `position`에 고정되기 때문에 텍스트가 길어짐에 따라 좌우로 확장되어 레이블이 움직여 보였던 것
+#### 😇 해결
+`horizontalAlignmentMode`의 값을 점수 레이블은 `.left`, 남은 횟수 레이블은 `.right`로 지정
+#### 😎 성과
+- `SKLabelNode`의 `alignmentMode` 속성이 단순 텍스트 정렬이 아니라 `position`에 대한 기준점을 정의하는 속성임을 정확히 이해하게 됨
+- `UIKit`의 오토레이아웃 개념과 `SpriteKit`에서의 레이아웃 방식은 다르다는 것을 경험
+- `SpriteKit`으로 개발할 때 `position` 기준점을 명확히 정의하는 것의 중요성을 깨닫는 계기가 되었음
